@@ -657,8 +657,31 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 	{
 		for (int y = 0; y < 32; y++)
 		{
-			Color c = GetPixel(sourcex+i, sourcey+y);
-			SetBufferPixel(destx+i, desty+y, c);
+			Color c = GetPixel(sourcex + i, sourcey + y);
+			SetBufferPixel(destx + i, desty + y, c);
+
+			//for rotation, flips are simply max x -x etc, for rotations just imagine the x/y axis changing, e.g a 90(?) rotation makes y -x, so just do -x for the y number instread. Combine for combined transformations
+		
+			switch (rot)
+			{
+				case 1:
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+				case 5:
+					break;
+				case 6:
+					break;
+				case 7:
+					break;
+
+				default:
+					throw exception("Fucked it");
+			}
 		}
 	}
 	
