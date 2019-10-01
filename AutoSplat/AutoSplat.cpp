@@ -653,6 +653,15 @@ void SetBufferPixel(int x, int y, Color c)
 int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 {
 	// TO DO: Implement this function (see slides)
+	for (int i = 0; i < 32; i++)
+	{
+		for (int y = 0; y < 32; y++)
+		{
+			Color c = GetPixel(sourcex+i, sourcey+y);
+			SetBufferPixel(destx+i, desty+y, c);
+		}
+	}
+	
 	return 0;
 }
 
@@ -664,16 +673,17 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 //				(32-bit) and copying it automatically propogates any colour changes to the map
 int DrawSegments2Buffer(SEGMENT* pSegments)
 {
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < 16*16; i++)
 	{
 		SEGMENT currentSeg = pSegments[i];
 		for (int y = 0; y < 16; y++) {
-			POLYSTRUCT currentPoly = currentSeg.strTilePolyStruct[i];
-			int tileLookup = currentPoly.clut;
+			POLYSTRUCT currentPoly = currentSeg.strTilePolyStruct[y];
+			int tileLookup = currentPoly.cTileRef;
 			int tileRotation = currentPoly.cRot;
-			CopyTIM2Buffer(i*4%16+y%4,)
+			CopyTIM2Buffer(_TIMXPOS(tileLookup), _TIMYPOS(tileLookup), 32*(((i%16)*4)+y%4), 32*((floor(i/16)*4)+floor(y/4)),tileRotation);
 		}
 	}
+	
 	// TO DO: Implement this function (see slides)
 	// Note the code below should copy the TIM at index "tileIndex" to the map grid square "mapIndex" 
 	// CopyTIM2Buffer(_TIMXPOS(tileIndex), _TIMYPOS(tileIndex), _MAPXPOS(mapIndex), _MAPYPOS(mapIndex), tileRot);
