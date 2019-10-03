@@ -91,6 +91,8 @@ Color GetCLUTcolour(CLUT_BLOCK& clut, int index);
 Color GetOriginalCLUTcolour(SHARED_CLUT& clut, int index);
 int CalculateUniqueCLUTs(TIM_FILE* pTims, int timCount, vector<SHARED_CLUT> &vCLUTs);
 int UnmanglePMM(char* filename, SEGMENT* &pSegments);
+void FlipPixel(int & xOffset, int & yOffset, bool flipInX);
+void RotatePixel(int & xOffset, int & yOffset, int angle);
 int DrawSegments2Buffer(SEGMENT* pSegments );
 int SaveChannelPNGs(string &folderPath, SEGMENT* pSegmentData, TIM_FILE* pTIMData);
 int SaveDiffusePNG(string &folderPath, SEGMENT* pSegmentData, TIM_FILE* pTIMData);
