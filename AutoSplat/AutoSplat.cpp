@@ -652,7 +652,7 @@ void SetBufferPixel(int x, int y, Color c)
 
 int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 {
-	// TO DO: Implement this function (see slides)
+	//For every pixel in x/y
 	for (int i = 0; i < 32; i++)
 	{
 		for (int y = 0; y < 32; y++)
@@ -660,20 +660,26 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 			int xOffset = i;
 			int yOffset = y;
 
-			//for rotation, flips are simply max x -x etc, for rotations just imagine the x/y axis changing, e.g a 90(?) rotation makes y -x, so just do -x for the y number instread. Combine for combined transformations
+			//Do transformations in stages, e.g some rot codes may have 2 stages
+			//offsets are given as references so will change
 		
-			if (rot == 1 || rot == 3 || rot == 7) { //all use a flip in X first 
+			//Flip in X stage
+			if (rot == 1 || rot == 3 || rot == 7) {
 				FlipPixel(xOffset, yOffset, true);
 			}
+			//Rotate 90 stage
 			if (rot == 2 || rot == 3) {
 				RotatePixel(xOffset, yOffset, 90);
 			}
+			//Rotate 180 stage
 			if (rot == 4) {
 				RotatePixel(xOffset, yOffset, 180);
 			}
+			//Flip in Y stage
 			if (rot == 5) {
 				FlipPixel(xOffset, yOffset, false);
 			}
+			//Rotate 270 Stage
 			if (rot == 6 || rot == 7) {
 				RotatePixel(xOffset, yOffset, 270);
 			}
@@ -685,7 +691,7 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 	
 	return 0;
 }
-//Flip in X or Y
+//Flip in X or Y depending on bool, Utility for CopyTIM2Buffer
 void FlipPixel(int& xOffset, int& yOffset, bool flipInX) {
 	
 	if (flipInX)
@@ -703,17 +709,14 @@ void RotatePixel(int& xOffset, int& yOffset, int angle) {
 	switch (angle) {
 	
 	case 90:
-		//break;
 		xOffset = 31 - tempY;
 		yOffset = 0 + tempX;
 		break;
 	case 180:
-		//break;
 		xOffset = 31 - tempX;
 		yOffset = 31 - tempY;
 		break;
 	case 270:
-		//break;
 		xOffset = 0 + tempY;
 		yOffset = 31 - tempX;
 		break;
@@ -728,10 +731,10 @@ void RotatePixel(int& xOffset, int& yOffset, int angle) {
 //				(32-bit) and copying it automatically propogates any colour changes to the map
 int DrawSegments2Buffer(SEGMENT* pSegments)
 {
-	for (int i = 0; i < 16*16; i++)
+	for (int i = 0; i < 16*16; i++) //For every segment
 	{
 		SEGMENT currentSeg = pSegments[i];
-		for (int y = 0; y < 16; y++) {
+		for (int y = 0; y < 16; y++) { //For every Polystruct per segment
 			POLYSTRUCT currentPoly = currentSeg.strTilePolyStruct[y];
 			int tileLookup = currentPoly.cTileRef;
 			int tileRotation = currentPoly.cRot;
